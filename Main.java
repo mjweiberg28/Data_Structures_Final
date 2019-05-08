@@ -18,6 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
@@ -44,9 +45,11 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 
 	private Label info;
 
-	private GridPane root;
+	private GridPane root1;
 
 	private GridPane root2;
+	
+	private ScrollPane root;
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -54,12 +57,13 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 			gameBoard = new ArrayList<Button>();
 			game = new FinalBaronGame(4);
 			game.addPropertyChangeListener(this);
-			root = new GridPane();
+			root1 = new GridPane();
+			root = new ScrollPane();
 			Scene scene = new Scene(root, 800, 600);
 			// Set up GUI
 			primaryStage.setTitle("Land Barron");
 			info = new Label(game.getInfo());
-			root.add(info, 0, 50);
+			root1.add(info, 0, 50);
 			ArrayList<Integer> listOfSizes = new ArrayList<Integer>();
 			listOfSizes.add(4);
 			listOfSizes.add(5);
@@ -71,8 +75,8 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 			size.setMinHeight(50);
 			Label sizeLabel =new Label("Size");
 			sizeLabel.setFont(Font.font(14));
-			root.add(sizeLabel, 0, 0);
-			root.add(size, 0, 1);
+			root1.add(sizeLabel, 0, 0);
+			root1.add(size, 0, 1);
 			root2 = new GridPane();
 			for (int i = 0; i < game.getSize()*game.getSize(); i++) {
 				Button button = generateButton(game.getTileAt(i));
@@ -90,20 +94,20 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 					gameBoard.add(i, button);
 					root2.add(gameBoard.get(i), i%game.getSize(), i/game.getSize());				
 			}
-			root.add(root2, 0, 3);
+			root1.add(root2, 0, 3);
 			resetButton = new Button("RESET");
 			resetButton.setAlignment(Pos.CENTER);
 			resetButton.setMinSize(100, 50);
 			resetButton.setOnAction(this);
-			root.add(resetButton, 1, 50);
+			root1.add(resetButton, 1, 50);
 
 			passButton = new Button("PASS");
 			passButton.setAlignment(Pos.CENTER);
 			passButton.setMinSize(100, 50);
 			passButton.setOnAction(this);
-			root.add(passButton, 1, 1);
+			root1.add(passButton, 1, 1);
 			
-			
+			root.setContent(root1);
 			/////
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
@@ -164,7 +168,7 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName()=="board") {
-			root.getChildren().remove(root2);
+			root1.getChildren().remove(root2);
 			root2 = new GridPane();
 			gameBoard = new ArrayList<Button>();
 			for (int i = 0; i < game.getSize()*game.getSize(); i++) {
@@ -183,7 +187,7 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 					gameBoard.add(i, button);
 					root2.add(gameBoard.get(i), i%game.getSize(), i/game.getSize());				
 			}
-			root.add(root2, 0, 3);
+			root1.add(root2, 0, 3);
 		}
 		for(int i=0;i<game.getSize()*game.getSize();i++) {
 			String name= "position "+i;
