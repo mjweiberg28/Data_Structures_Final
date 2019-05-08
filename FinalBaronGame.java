@@ -140,10 +140,16 @@ public class FinalBaronGame {
 	 */
 	public void makeBid(int row, int col) throws Exception{
 		try {
-		if(turn%2==1)
-			p1Budget = gameBoard.get(row).get(col).changeOwner(p1Budget,'1');
-		else
-			p2Budget = gameBoard.get(row).get(col).changeOwner(p2Budget,'2');
+		if(turn%2==1) {
+			int [] budgets = gameBoard.get(row).get(col).changeOwner(p1Budget,p2Budget,'1');
+			p1Budget=budgets[0];
+			p2Budget=budgets[1];
+		}
+		else {
+			int [] budgets = gameBoard.get(row).get(col).changeOwner(p2Budget,p1Budget,'2');
+			p1Budget=budgets[1];
+			p2Budget=budgets[0];
+		}
 		turn++;
 		}
 		catch(Exception e) {

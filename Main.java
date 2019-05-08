@@ -78,7 +78,17 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 				gameBoard.add(i, new ArrayList<Button>());
 				for (int j = 0; j < game.getSize(); j++) {
 					Button button = generateButton(game.getTileAt(i, j));
-					button.setOnAction(this);
+					int index1 = i, index2=j;
+					button.setOnMouseClicked(e -> {
+						try {
+							game.makeBid(index1, index2);
+						} catch (Exception e1) {
+							Alert alert = new Alert(Alert.AlertType.ERROR);
+							alert.setTitle("Error");
+							alert.setContentText(e1.getMessage());
+							alert.showAndWait();
+						}
+					});
 					gameBoard.get(i).add(j, button);
 					root2.add(gameBoard.get(i).get(j), j, i);
 				}
@@ -153,23 +163,6 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 			game.passClicked();
 		else if (event.getSource()==size)
 			game.setSize(size.getValue());
-		else {
-			for(int i=0;i<game.getSize();i++) {
-				for(int j=0;j<game.getSize();j++) {
-					if(event.getSource()==gameBoard.get(i).get(j)) {
-						System.out.println("Row: "+i+", Col: "+j);
-						try {
-							game.makeBid(i, j);
-						} catch (Exception e) {
-							Alert alert = new Alert(Alert.AlertType.ERROR);
-							alert.setTitle("Error");
-							alert.setContentText(e.getMessage());
-							alert.showAndWait();
-						}
-					}
-				}
-			}
-		}
 	}
 
 	@Override
@@ -181,8 +174,21 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 			for (int i = 0; i < game.getSize(); i++) {
 				gameBoard.add(i, new ArrayList<Button>());
 				for (int j = 0; j < game.getSize(); j++) {
-					gameBoard.get(i).add(j, generateButton(game.getTileAt(i, j)));
-					gameBoard.get(i).get(j).setOnAction(this);
+					//gameBoard.get(i).add(j, generateButton(game.getTileAt(i, j)));
+					//gameBoard.get(i).get(j).setOnAction(this);
+					Button button = generateButton(game.getTileAt(i, j));
+					int index1 = i, index2=j;
+					button.setOnMouseClicked(e -> {
+						try {
+							game.makeBid(index1, index2);
+						} catch (Exception e1) {
+							Alert alert = new Alert(Alert.AlertType.ERROR);
+							alert.setTitle("Error");
+							alert.setContentText(e1.getMessage());
+							alert.showAndWait();
+						}
+					});
+					gameBoard.get(i).add(j,button);
 					root2.add(gameBoard.get(i).get(j), j, i);
 				}
 			}
@@ -192,8 +198,19 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 			for(int j=0;j<game.getSize();j++) {
 				String name= "position"+i+" "+j;
 				if(evt.getPropertyName().equals(name)) {
-					gameBoard.get(i).add(j, generateButton(game.getTileAt(i, j)));
-					gameBoard.get(i).get(j).setOnAction(this);
+					Button button = generateButton(game.getTileAt(i, j));
+					int index1 = i, index2=j;
+					button.setOnMouseClicked(e -> {
+						try {
+							game.makeBid(index1, index2);
+						} catch (Exception e1) {
+							Alert alert = new Alert(Alert.AlertType.ERROR);
+							alert.setTitle("Error");
+							alert.setContentText(e1.getMessage());
+							alert.showAndWait();
+						}
+					});
+					gameBoard.get(i).add(j,button);
 					root2.add(gameBoard.get(i).get(j), j, i);
 				}
 			}

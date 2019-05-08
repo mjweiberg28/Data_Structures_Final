@@ -38,19 +38,24 @@ public class LandTile {
 	 * @return the new budget of player
 	 * @throws Exception If player can't buy land
 	 */
-	public int changeOwner(int playerBudget, char player) throws Exception {
+	public int [] changeOwner(int playerBiddingBudget, int otherPlayerBudget,char player) throws Exception {
 		if (type=='O')
 			throw new Exception("This land is off limits. The cops are coming.");
 		else if(type=='E')	
 			throw new Exception("You cannot buy the starting or ending position.");
 		else if(type=='C')
 			throw new Exception("This land is used by the company, you thief.");
-		else if(playerBudget<cost)
+		else if(playerBiddingBudget<=cost)
 			throw new Exception("You do not have enough money, you broke peasant.");
 		else {
+			if(type!='U'&&type!=player)
+				otherPlayerBudget=otherPlayerBudget+cost;
 			type=player;
 			cost=cost+1;
-			return playerBudget-cost;
+			int [] budgets = new int[2];
+			budgets[0]=playerBiddingBudget-cost;
+			budgets[1]=otherPlayerBudget;
+			return budgets;
 		}
 	}
 }
