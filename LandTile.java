@@ -45,15 +45,21 @@ public class LandTile {
 			throw new Exception("You cannot buy the starting or ending position.");
 		else if(type=='C')
 			throw new Exception("This land is used by the company, you thief.");
-		else if(playerBiddingBudget<=cost)
+		else if((playerBiddingBudget==0)||(type!=player&&playerBiddingBudget<=cost))
 			throw new Exception("You do not have enough money, you broke peasant.");
 		else {
 			if(type!='U'&&type!=player)
 				otherPlayerBudget=otherPlayerBudget+cost;
-			type=player;
-			cost=cost+1;
 			int [] budgets = new int[2];
-			budgets[0]=playerBiddingBudget-cost;
+			if(type!=player) {
+				type=player;
+				cost=cost+1;
+				budgets[0]=playerBiddingBudget-cost;
+			}
+			else if(type==player) {
+				budgets[0]=playerBiddingBudget-1;
+				cost=cost+1;
+			}
 			budgets[1]=otherPlayerBudget;
 			return budgets;
 		}
