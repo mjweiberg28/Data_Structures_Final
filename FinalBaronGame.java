@@ -1,11 +1,16 @@
 package application;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javafx.scene.control.TextField;
 
 public class FinalBaronGame {
+	/** A helper object to handle observer pattern behavior */
+	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	
 	/** Variable for size of board */
 	private int size;
 	
@@ -34,6 +39,7 @@ public class FinalBaronGame {
 		turn =1;
 		pass=-1;
 		done = false;
+		gameBoard = new ArrayList<ArrayList<LandTile>>();
 		for(int i=0;i<size;i++) {
 			gameBoard.add(i, new ArrayList<LandTile>());
 			for(int j=0;j<size;j++) {
@@ -47,18 +53,14 @@ public class FinalBaronGame {
 				newType = 'C';
 			else
 				newType = 'O';
-			int row = name.nextInt(4);
-			int col = 0;
-			if(row==0)
-				col = name.nextInt(3)+1;
-			else if(row==3)
-				col = name.nextInt(3)-1;
-			else
-				col = name.nextInt(4);
-			gameBoard.get(row).add(col, new LandTile(newType));
+			int position = name.nextInt((size*size)-2)+1;
+			while(gameBoard.get(position/size).get(position%size).getType()!='U'){
+				position = name.nextInt((size*size)-2)+1;
+			}
+			gameBoard.get(position/size).add(position%size, new LandTile(newType));
 		}
 		gameBoard.get(0).add(0, new LandTile('E'));
-		gameBoard.get(3).add(3, new LandTile('E'));
+		gameBoard.get(size-1).add(size-1, new LandTile('E'));
 	}
 	
 	/**
@@ -72,6 +74,7 @@ public class FinalBaronGame {
 		turn =1;
 		pass=-1;
 		done = false;
+		gameBoard = new ArrayList<ArrayList<LandTile>>();
 		for(int i=0;i<size;i++) {
 			gameBoard.add(i, new ArrayList<LandTile>());
 			for(int j=0;j<size;j++) {
@@ -85,18 +88,15 @@ public class FinalBaronGame {
 				newType = 'C';
 			else
 				newType = 'O';
-			int row = name.nextInt(4);
-			int col = 0;
-			if(row==0)
-				col = name.nextInt(3)+1;
-			else if(row==3)
-				col = name.nextInt(3)-1;
-			else
-				col = name.nextInt(4);
-			gameBoard.get(row).add(col, new LandTile(newType));
+			int position = name.nextInt((size*size)-2)+1;
+			while(gameBoard.get(position/size).get(position%size).getType()!='U'){
+				position = name.nextInt((size*size)-2)+1;
+			}
+			gameBoard.get(position/size).add(position%size, new LandTile(newType));
 		}
 		gameBoard.get(0).add(0, new LandTile('E'));
-		gameBoard.get(3).add(3, new LandTile('E'));
+		gameBoard.get(size-1).add(size-1, new LandTile('E'));
+		pcs.firePropertyChange("board", null, null);
 	}
 	/**
 	 * Method to reset game
@@ -107,6 +107,7 @@ public class FinalBaronGame {
 		turn =1;
 		pass=-1;
 		done = false;
+		gameBoard = new ArrayList<ArrayList<LandTile>>();
 		for(int i=0;i<size;i++) {
 			gameBoard.add(i, new ArrayList<LandTile>());
 			for(int j=0;j<size;j++) {
@@ -120,18 +121,15 @@ public class FinalBaronGame {
 				newType = 'C';
 			else
 				newType = 'O';
-			int row = name.nextInt(4);
-			int col = 0;
-			if(row==0)
-				col = name.nextInt(3)+1;
-			else if(row==3)
-				col = name.nextInt(3)-1;
-			else
-				col = name.nextInt(4);
-			gameBoard.get(row).add(col, new LandTile(newType));
+			int position = name.nextInt((size*size)-2)+1;
+			while(gameBoard.get(position/size).get(position%size).getType()!='U'){
+				position = name.nextInt((size*size)-2)+1;
+			}
+			gameBoard.get(position/size).add(position%size, new LandTile(newType));
 		}
 		gameBoard.get(0).add(0, new LandTile('E'));
-		gameBoard.get(3).add(3, new LandTile('E'));
+		gameBoard.get(size-1).add(size-1, new LandTile('E'));
+		pcs.firePropertyChange("board", null, null);
 	}
 	
 	/**
@@ -141,11 +139,18 @@ public class FinalBaronGame {
 	 * @throws Exception If Land can't be bid on
 	 */
 	public void makeBid(int row, int col) throws Exception{
+		try {
 		if(turn%2==1)
 			p1Budget = gameBoard.get(row).get(col).changeOwner(p1Budget,'1');
 		else
 			p2Budget = gameBoard.get(row).get(col).changeOwner(p2Budget,'2');
 		turn++;
+		}
+		catch(Exception e) {
+			throw e;
+		}
+		String name = "position"+row+" "+col;
+		pcs.firePropertyChange(name, null, null);
 	}
 	
 	/**
@@ -158,6 +163,7 @@ public class FinalBaronGame {
 			pass=turn;
 			turn++;
 		}
+		pcs.firePropertyChange("pass", null, null);
 	}
 
 	public String getInfo() {
@@ -170,9 +176,9 @@ public class FinalBaronGame {
 				info=info+"Player 1 Turn ";
 			else
 				info=info+"Player 2 Turn ";
-			info="\n"+"Player 1 Budget: "+ p1Budget +"\n"+ "Player 2 Budget: "+p2Budget;
+			info=info+"\n"+"Player 1 Budget: "+ p1Budget +"\n"+ "Player 2 Budget: "+p2Budget;
 			if(turn==pass+1)
-				info="\n"+"PASSING ENDS THE GAME";
+				info=info+"\n"+"PASSING ENDS THE GAME";
 			return info;
 		}
 	}
@@ -184,5 +190,32 @@ public class FinalBaronGame {
 	private String getWinner() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/**
+	 * Don't forget to create a way for Observers to subscribe to this
+	 * @param listener
+	 */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.pcs.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * And Observers probably want to be able to unsubscribe as well
+     * @param listener
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        this.pcs.removePropertyChangeListener(listener);
+    }
+    /**
+     * Getter for size variable
+     * @return the size of game
+     */
+	public int getSize() {
+		return size;
+	}
+
+	public LandTile getTileAt(int i, int j) {
+		return gameBoard.get(i).get(j);
 	}
 }

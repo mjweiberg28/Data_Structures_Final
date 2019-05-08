@@ -11,11 +11,16 @@ public class LandTile {
 	 * Constructor 
 	 * @param type The type of land
 	 */
-	LandTile(char type){
+	LandTile(char newType){
+		type=newType;
 		if (type == 'O')
 			cost = Integer.MAX_VALUE;
 		else
 			cost=0;
+	}
+	
+	public int getType() {
+		return type;
 	}
 	
 	/**
