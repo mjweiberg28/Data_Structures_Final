@@ -15,7 +15,7 @@ public class FinalBaronGame {
 	private int size;
 	
 	/** Variable for game board */
-	private ArrayList<ArrayList<LandTile>> gameBoard;
+	private ArrayList<LandTile> gameBoard;
 	
 	/** Variable for player 1's budget */
 	private int p1Budget;
@@ -39,28 +39,7 @@ public class FinalBaronGame {
 		turn =1;
 		pass=-1;
 		done = false;
-		gameBoard = new ArrayList<ArrayList<LandTile>>();
-		for(int i=0;i<size;i++) {
-			gameBoard.add(i, new ArrayList<LandTile>());
-			for(int j=0;j<size;j++) {
-				gameBoard.get(i).add(j, new LandTile('U'));
-			}
-		}
-		Random name = new Random(); 
-		for(int i=0; i<size; i++) {
-			char newType = ' ';
-			if (name.nextInt(2)==0)
-				newType = 'C';
-			else
-				newType = 'O';
-			int position = name.nextInt((size*size)-2)+1;
-			while(gameBoard.get(position/size).get(position%size).getType()!='U'){
-				position = name.nextInt((size*size)-2)+1;
-			}
-			gameBoard.get(position/size).add(position%size, new LandTile(newType));
-		}
-		gameBoard.get(0).add(0, new LandTile('E'));
-		gameBoard.get(size-1).add(size-1, new LandTile('E'));
+		reMakeBoard();
 	}
 	
 	/**
@@ -74,28 +53,7 @@ public class FinalBaronGame {
 		turn =1;
 		pass=-1;
 		done = false;
-		gameBoard = new ArrayList<ArrayList<LandTile>>();
-		for(int i=0;i<size;i++) {
-			gameBoard.add(i, new ArrayList<LandTile>());
-			for(int j=0;j<size;j++) {
-				gameBoard.get(i).add(j, new LandTile('U'));
-			}
-		}
-		Random name = new Random(); 
-		for(int i=0; i<size; i++) {
-			char newType = ' ';
-			if (name.nextInt(2)==0)
-				newType = 'C';
-			else
-				newType = 'O';
-			int position = name.nextInt((size*size)-2)+1;
-			while(gameBoard.get(position/size).get(position%size).getType()!='U'){
-				position = name.nextInt((size*size)-2)+1;
-			}
-			gameBoard.get(position/size).add(position%size, new LandTile(newType));
-		}
-		gameBoard.get(0).add(0, new LandTile('E'));
-		gameBoard.get(size-1).add(size-1, new LandTile('E'));
+		reMakeBoard();
 		pcs.firePropertyChange("board", null, null);
 	}
 	/**
@@ -107,28 +65,7 @@ public class FinalBaronGame {
 		turn =1;
 		pass=-1;
 		done = false;
-		gameBoard = new ArrayList<ArrayList<LandTile>>();
-		for(int i=0;i<size;i++) {
-			gameBoard.add(i, new ArrayList<LandTile>());
-			for(int j=0;j<size;j++) {
-				gameBoard.get(i).add(j, new LandTile('U'));
-			}
-		}
-		Random name = new Random(); 
-		for(int i=0; i<size; i++) {
-			char newType = ' ';
-			if (name.nextInt(2)==0)
-				newType = 'C';
-			else
-				newType = 'O';
-			int position = name.nextInt((size*size)-2)+1;
-			while(gameBoard.get(position/size).get(position%size).getType()!='U'){
-				position = name.nextInt((size*size)-2)+1;
-			}
-			gameBoard.get(position/size).add(position%size, new LandTile(newType));
-		}
-		gameBoard.get(0).add(0, new LandTile('E'));
-		gameBoard.get(size-1).add(size-1, new LandTile('E'));
+		reMakeBoard();
 		pcs.firePropertyChange("board", null, null);
 	}
 	
@@ -138,15 +75,15 @@ public class FinalBaronGame {
 	 * @param col Column of LandTile bidding on
 	 * @throws Exception If Land can't be bid on
 	 */
-	public void makeBid(int row, int col) throws Exception{
+	public void makeBid(int position) throws Exception{
 		try {
 		if(turn%2==1) {
-			int [] budgets = gameBoard.get(row).get(col).changeOwner(p1Budget,p2Budget,'1');
+			int [] budgets = gameBoard.get(position).changeOwner(p1Budget,p2Budget,'1');
 			p1Budget=budgets[0];
 			p2Budget=budgets[1];
 		}
 		else {
-			int [] budgets = gameBoard.get(row).get(col).changeOwner(p2Budget,p1Budget,'2');
+			int [] budgets = gameBoard.get(position).changeOwner(p2Budget,p1Budget,'2');
 			p1Budget=budgets[1];
 			p2Budget=budgets[0];
 		}
@@ -155,7 +92,7 @@ public class FinalBaronGame {
 		catch(Exception e) {
 			throw e;
 		}
-		String name = "position"+row+" "+col;
+		String name = "position "+position;
 		pcs.firePropertyChange(name, null, null);
 	}
 	
@@ -221,7 +158,31 @@ public class FinalBaronGame {
 		return size;
 	}
 
-	public LandTile getTileAt(int i, int j) {
-		return gameBoard.get(i).get(j);
+	public LandTile getTileAt(int i) {
+		return gameBoard.get(i);
+	}
+	
+	private void reMakeBoard() {
+		gameBoard = new ArrayList<LandTile>();
+		for(int i=0;i<size*size;i++) {
+				gameBoard.add(i, new LandTile('U'));
+			}
+		Random name = new Random();
+		gameBoard.add(0, new LandTile('E'));
+		gameBoard.add((size*size)-1, new LandTile('E'));
+		for(int i=0; i<size; i++) {
+			char newType = ' ';
+			if (name.nextInt(2)==0)
+				newType = 'C';
+			else
+				newType = 'O';
+			int position = name.nextInt((size*size)-2)+1;
+			while(gameBoard.get(position).getType()!='U'){
+				position = name.nextInt((size*size)-2)+1;
+			}
+			gameBoard.remove(position);
+			gameBoard.add(position, new LandTile(newType));
+		}
+		
 	}
 }

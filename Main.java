@@ -36,7 +36,7 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 	
 	private Button passButton;
 
-	private ArrayList<ArrayList<Button>> gameBoard;
+	private ArrayList<Button> gameBoard;
 
 	private FinalBaronGame game;
 
@@ -51,7 +51,7 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			gameBoard = new ArrayList<ArrayList<Button>>();
+			gameBoard = new ArrayList<Button>();
 			game = new FinalBaronGame(4);
 			game.addPropertyChangeListener(this);
 			root = new GridPane();
@@ -74,14 +74,12 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 			root.add(sizeLabel, 0, 0);
 			root.add(size, 0, 1);
 			root2 = new GridPane();
-			for (int i = 0; i < game.getSize(); i++) {
-				gameBoard.add(i, new ArrayList<Button>());
-				for (int j = 0; j < game.getSize(); j++) {
-					Button button = generateButton(game.getTileAt(i, j));
-					int index1 = i, index2=j;
-					button.setOnMouseClicked(e -> {
+			for (int i = 0; i < game.getSize()*game.getSize(); i++) {
+				Button button = generateButton(game.getTileAt(i));
+				int index1 = i;
+				button.setOnMouseClicked(e -> {
 						try {
-							game.makeBid(index1, index2);
+							game.makeBid(index1);
 						} catch (Exception e1) {
 							Alert alert = new Alert(Alert.AlertType.ERROR);
 							alert.setTitle("Error");
@@ -89,9 +87,8 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 							alert.showAndWait();
 						}
 					});
-					gameBoard.get(i).add(j, button);
-					root2.add(gameBoard.get(i).get(j), j, i);
-				}
+					gameBoard.add(i, button);
+					root2.add(gameBoard.get(i), i%game.getSize(), i/game.getSize());				
 			}
 			root.add(root2, 0, 3);
 			resetButton = new Button("RESET");
@@ -105,13 +102,12 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 			passButton.setMinSize(100, 50);
 			passButton.setOnAction(this);
 			root.add(passButton, 1, 1);
+			
+			
 			/////
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
-			
-			
-			
 			
 			
 		} catch(Exception e) {
@@ -170,17 +166,13 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 		if (evt.getPropertyName()=="board") {
 			root.getChildren().remove(root2);
 			root2 = new GridPane();
-			gameBoard = new ArrayList<ArrayList<Button>>();
-			for (int i = 0; i < game.getSize(); i++) {
-				gameBoard.add(i, new ArrayList<Button>());
-				for (int j = 0; j < game.getSize(); j++) {
-					//gameBoard.get(i).add(j, generateButton(game.getTileAt(i, j)));
-					//gameBoard.get(i).get(j).setOnAction(this);
-					Button button = generateButton(game.getTileAt(i, j));
-					int index1 = i, index2=j;
-					button.setOnMouseClicked(e -> {
+			gameBoard = new ArrayList<Button>();
+			for (int i = 0; i < game.getSize()*game.getSize(); i++) {
+				Button button = generateButton(game.getTileAt(i));
+				int index1 = i;
+				button.setOnMouseClicked(e -> {
 						try {
-							game.makeBid(index1, index2);
+							game.makeBid(index1);
 						} catch (Exception e1) {
 							Alert alert = new Alert(Alert.AlertType.ERROR);
 							alert.setTitle("Error");
@@ -188,35 +180,31 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 							alert.showAndWait();
 						}
 					});
-					gameBoard.get(i).add(j,button);
-					root2.add(gameBoard.get(i).get(j), j, i);
-				}
+					gameBoard.add(i, button);
+					root2.add(gameBoard.get(i), i%game.getSize(), i/game.getSize());				
 			}
 			root.add(root2, 0, 3);
 		}
-		for(int i=0;i<game.getSize();i++) {
-			for(int j=0;j<game.getSize();j++) {
-				String name= "position"+i+" "+j;
-				if(evt.getPropertyName().equals(name)) {
-					Button button = generateButton(game.getTileAt(i, j));
-					int index1 = i, index2=j;
-					button.setOnMouseClicked(e -> {
-						try {
-							game.makeBid(index1, index2);
-						} catch (Exception e1) {
-							Alert alert = new Alert(Alert.AlertType.ERROR);
-							alert.setTitle("Error");
-							alert.setContentText(e1.getMessage());
-							alert.showAndWait();
-						}
-					});
-					gameBoard.get(i).add(j,button);
-					root2.add(gameBoard.get(i).get(j), j, i);
-				}
+		for(int i=0;i<game.getSize()*game.getSize();i++) {
+			String name= "position "+i;
+			if(evt.getPropertyName().equals(name)) {
+				Button button = generateButton(game.getTileAt(i));
+				int index1 = i;
+				button.setOnMouseClicked(e -> {
+					try {
+						game.makeBid(index1);
+					} catch (Exception e1) {
+						Alert alert = new Alert(Alert.AlertType.ERROR);
+						alert.setTitle("Error");
+						alert.setContentText(e1.getMessage());
+						alert.showAndWait();
+					}
+				});
+				gameBoard.add(i,button);
+				root2.add(gameBoard.get(i), i%game.getSize(), i/game.getSize());
 			}
 		}
 		info.setText(game.getInfo());
-			
 		
 	}
 }
