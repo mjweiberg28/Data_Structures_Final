@@ -6,19 +6,30 @@ public class LandTile {
 	
 	/** Variable for type of land (O=Off Limits, C = Company, E= end, U = unowned, ‘1’= player1 ‘2’ = player2) */
 	private char type; 
-
+	/** Variable to know if part of AI path*/
+	private boolean onPath;
 	/**
 	 * Constructor 
 	 * @param type The type of land
 	 */
 	LandTile(char newType){
 		type=newType;
+		onPath=false;
 		if (type == 'O')
 			cost = Integer.MAX_VALUE;
 		else
 			cost=0;
 	}
-	
+	/**
+	 * Method to change a tile to being on the path
+	 */
+	public void setOnPath() {
+		onPath=true;
+	}
+	/**
+	 * Getter for Type
+	 * @return the type
+	 */
 	public int getType() {
 		return type;
 	}
@@ -63,5 +74,8 @@ public class LandTile {
 			budgets[1]=otherPlayerBudget;
 			return budgets;
 		}
+	}
+	public boolean isOnPath() {
+		return onPath;
 	}
 }
