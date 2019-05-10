@@ -220,7 +220,7 @@ public class FinalBaronGame {
 					pathTable[next.getIndex()+1][0]=next.getPrice()+gameBoard.get(next.getIndex()+1).getCost();
 					pathTable[next.getIndex()+1][2]=2;
 					pathTable[next.getIndex()+1][1]=next.getIndex();
-					LandItem toAdd = new LandItem(next.getIndex()+1, pathTable[next.getIndex()+1][2]);
+					LandItem toAdd = new LandItem(next.getIndex()+1, pathTable[next.getIndex()+1][0]);
 					queue.add(toAdd);
 				}
 				//Second time, checking if cheaper path
@@ -229,7 +229,7 @@ public class FinalBaronGame {
 					queue.remove(toRemove);
 					pathTable[next.getIndex()+1][0]=next.getPrice()+gameBoard.get(next.getIndex()+1).getCost();
 					pathTable[next.getIndex()+1][1]=next.getIndex();
-					LandItem toAdd = new LandItem(next.getIndex()+1, pathTable[next.getIndex()+1][2]);
+					LandItem toAdd = new LandItem(next.getIndex()+1, pathTable[next.getIndex()+1][0]);
 					queue.add(toAdd);
 				}
 			}
@@ -240,7 +240,7 @@ public class FinalBaronGame {
 					pathTable[next.getIndex()-1][0]=next.getPrice()+gameBoard.get(next.getIndex()-1).getCost();
 					pathTable[next.getIndex()-1][2]=2;
 					pathTable[next.getIndex()-1][1]=next.getIndex();
-					LandItem toAdd = new LandItem(next.getIndex()-1, pathTable[next.getIndex()-1][2]);
+					LandItem toAdd = new LandItem(next.getIndex()-1, pathTable[next.getIndex()-1][0]);
 					queue.add(toAdd);
 				}
 				//Second time, checking if cheaper path
@@ -249,7 +249,7 @@ public class FinalBaronGame {
 					queue.remove(toRemove);
 					pathTable[next.getIndex()-1][0]=next.getPrice()+gameBoard.get(next.getIndex()-1).getCost();
 					pathTable[next.getIndex()-1][1]=next.getIndex();
-					LandItem toAdd = new LandItem(next.getIndex()-1, pathTable[next.getIndex()-1][2]);
+					LandItem toAdd = new LandItem(next.getIndex()-1, pathTable[next.getIndex()-1][0]);
 					queue.add(toAdd);
 				}
 			}
@@ -260,7 +260,7 @@ public class FinalBaronGame {
 					pathTable[next.getIndex()+size][0]=next.getPrice()+gameBoard.get(next.getIndex()+size).getCost();
 					pathTable[next.getIndex()+size][2]=2;
 					pathTable[next.getIndex()+size][1]=next.getIndex();
-					LandItem toAdd = new LandItem(next.getIndex()+size, pathTable[next.getIndex()+size][2]);
+					LandItem toAdd = new LandItem(next.getIndex()+size, pathTable[next.getIndex()+size][0]);
 					queue.add(toAdd);
 				}
 				//Second time, checking if cheaper path
@@ -269,7 +269,7 @@ public class FinalBaronGame {
 					queue.remove(toRemove);
 					pathTable[next.getIndex()+size][0]=next.getPrice()+gameBoard.get(next.getIndex()+size).getCost();
 					pathTable[next.getIndex()+size][1]=next.getIndex();
-					LandItem toAdd = new LandItem(next.getIndex()+size, pathTable[next.getIndex()+size][2]);
+					LandItem toAdd = new LandItem(next.getIndex()+size, pathTable[next.getIndex()+size][0]);
 					queue.add(toAdd);
 				}
 			}
@@ -280,7 +280,7 @@ public class FinalBaronGame {
 					pathTable[next.getIndex()-size][0]=next.getPrice()+gameBoard.get(next.getIndex()-size).getCost();
 					pathTable[next.getIndex()-size][2]=2;
 					pathTable[next.getIndex()-size][1]=next.getIndex();
-					LandItem toAdd = new LandItem(next.getIndex()-size, pathTable[next.getIndex()-size][2]);
+					LandItem toAdd = new LandItem(next.getIndex()-size, pathTable[next.getIndex()-size][0]);
 					queue.add(toAdd);
 				}
 				//Second time, checking if cheaper path
@@ -289,7 +289,7 @@ public class FinalBaronGame {
 					queue.remove(toRemove);
 					pathTable[next.getIndex()-size][0]=next.getPrice()+gameBoard.get(next.getIndex()-size).getCost();
 					pathTable[next.getIndex()-size][1]=next.getIndex();
-					LandItem toAdd = new LandItem(next.getIndex()-size, pathTable[next.getIndex()-size][2]);
+					LandItem toAdd = new LandItem(next.getIndex()-size, pathTable[next.getIndex()-size][0]);
 					queue.add(toAdd);
 				}
 			}
