@@ -134,19 +134,31 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 		}
 		else if(tile.getType()=='C') {
 			block.setText("COMPANY \n LAND");
-			block.setBackground(new Background(new BackgroundFill(Color.GREENYELLOW,CornerRadii.EMPTY,Insets.EMPTY)));
+			if(tile.isOnPath())
+				block.setBackground(new Background(new BackgroundFill(Color.GREEN,CornerRadii.EMPTY,Insets.EMPTY)));
+			else
+				block.setBackground(new Background(new BackgroundFill(Color.GREENYELLOW,CornerRadii.EMPTY,Insets.EMPTY)));
 		}
 		else if(tile.getType()=='U') {
 			block.setText("0");
-			block.setBackground(new Background(new BackgroundFill(Color.GREY,CornerRadii.EMPTY,Insets.EMPTY)));
+			if(tile.isOnPath())
+				block.setBackground(new Background(new BackgroundFill(Color.GREEN,CornerRadii.EMPTY,Insets.EMPTY)));
+			else
+				block.setBackground(new Background(new BackgroundFill(Color.GREY,CornerRadii.EMPTY,Insets.EMPTY)));
 		}
 		else if(tile.getType()=='1') {
 			block.setText(Integer.toString(tile.getCost()));
-			block.setBackground(new Background(new BackgroundFill(Color.PINK,CornerRadii.EMPTY,Insets.EMPTY)));
+			if(tile.isOnPath())
+				block.setBackground(new Background(new BackgroundFill(Color.DEEPPINK,CornerRadii.EMPTY,Insets.EMPTY)));
+			else
+				block.setBackground(new Background(new BackgroundFill(Color.PINK,CornerRadii.EMPTY,Insets.EMPTY)));
 		}
 		else if(tile.getType()=='2') {
 			block.setText(Integer.toString(tile.getCost()));
-			block.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE,CornerRadii.EMPTY,Insets.EMPTY)));
+			if(tile.isOnPath())
+				block.setBackground(new Background(new BackgroundFill(Color.DARKBLUE,CornerRadii.EMPTY,Insets.EMPTY)));
+			else
+				block.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE,CornerRadii.EMPTY,Insets.EMPTY)));
 		}
 		return block;
 	}
