@@ -3,16 +3,15 @@ package application;
  * Class for the tiles used in the game
  * @author Erin Jagt & Micah Weiberg
  * @version 05/13/19
- *
  */
 public class LandTile {
 	/** Variable for cost of land */
 	private int cost;
-	
 	/** Variable for type of land (O=Off Limits, C = Company, E= end, U = unowned, ‘1’= player1 ‘2’ = player2) */
 	private char type; 
 	/** Variable to know if part of AI path*/
 	private boolean onPath;
+	
 	/**
 	 * Constructor 
 	 * @param type The type of land
