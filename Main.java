@@ -29,26 +29,30 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-
+/**
+ * Main class implements the GUI for the Land Baron game
+ * @author Erin Jagt & Micah Weiberg
+ * @version 05/13/19
+ */
 public class Main extends Application implements PropertyChangeListener, EventHandler<ActionEvent>
 {
-	
+	/** Button that resets the game to a new game */
 	private Button resetButton;
-	
+	/** Button that passes the turn to the other player */
 	private Button passButton;
-
+	/** ArrayList of Buttons for the n x n game-board */
 	private ArrayList<Button> gameBoard;
-
+	/** Pointer to FinalBaronGame object for each new game */
 	private FinalBaronGame game;
-
+	/** ComboBox drop-down for selecting the size of the n x n game-board */
 	private ComboBox<Integer> size;
-
+	/** Label that displays the game information to the user */
 	private Label info;
-
+	/** Holds root2 game-board, all buttons, size, and labels */
 	private GridPane root1;
-
+	/** Holds the game-board to the game itself */
 	private GridPane root2;
-	
+	/** Allows the GUI to scroll for larger size game-boards */
 	private ScrollPane root;
 	
 	@Override
@@ -64,26 +68,27 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 			primaryStage.setTitle("Land Barron");
 			info = new Label(game.getInfo());
 			root1.add(info, 0, 50);
-			ArrayList<Integer> listOfSizes = new ArrayList<Integer>();
+			ArrayList<Integer> listOfSizes = new ArrayList<Integer>(); // ArrayList of available game sizes
 			listOfSizes.add(4);
 			listOfSizes.add(5);
 			listOfSizes.add(6);
 			listOfSizes.add(7);
 			size = new ComboBox<Integer>();
 			size.getItems().addAll(listOfSizes);
-			size.setOnAction(this);
+			size.setOnAction(this); // sets size variable equal to size selected in the ComboBox
 			size.setMinHeight(50);
 			Label sizeLabel =new Label("Size");
 			sizeLabel.setFont(Font.font(14));
 			root1.add(sizeLabel, 0, 0);
 			root1.add(size, 0, 1);
 			root2 = new GridPane();
+			// Creates the grid of buttons and adds them to root2 GridPane
 			for (int i = 0; i < game.getSize()*game.getSize(); i++) {
 				Button button = generateButton(game.getTileAt(i));
 				int index1 = i;
 				button.setOnMouseClicked(e -> {
 						try {
-							game.makeBid(index1);
+							game.makeBid(index1); // calls makeBid when Button is clicked
 						} catch (Exception e1) {
 							Alert alert = new Alert(Alert.AlertType.ERROR);
 							alert.setTitle("Error");
@@ -108,17 +113,19 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 			root1.add(passButton, 1, 1);
 			
 			root.setContent(root1);
-			/////
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
-			
-			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * Method that generates colors and values for each Button as a LandTile object
+	 * @param tile Tile object for board space that holds its cost, type, and if it is on the cheapest path
+	 * @return A Button with the correct features for the game-board
+	 */
 	private Button generateButton(LandTile tile) {
 		Button block= new Button();
 		block.setAlignment(Pos.CENTER);
@@ -164,10 +171,12 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 	}
 
 	public static void main(String[] args) {
-		launch(args);
+		launch(args); // Launches the GUI
 	}
 
-	@Override
+	/**
+	 * This handles when the buttons are clicked
+	 */
 	public void handle(ActionEvent event) {
 		if (event.getSource()==resetButton)
 			game.resetGame();
@@ -177,7 +186,9 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 			game.setSize(size.getValue());
 	}
 
-	@Override
+	/**
+	 * This gets called when a PropertyChange has been fired
+	 */
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName()=="board") {
 			root1.getChildren().remove(root2);
@@ -221,6 +232,5 @@ public class Main extends Application implements PropertyChangeListener, EventHa
 			}
 		}
 		info.setText(game.getInfo());
-		
 	}
 }
