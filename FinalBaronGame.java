@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.Random;
 
-import javafx.scene.control.TextField;
-
 public class FinalBaronGame {
 	/** A helper object to handle observer pattern behavior */
 	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
@@ -33,6 +31,10 @@ public class FinalBaronGame {
 	/** Variable for if game done */
 	private boolean done;
 	
+	/**
+	 * Constructor for FinalBaronGame
+	 * @param newSize the size of the game board o build
+	 */
 	FinalBaronGame(int newSize){
 		size = newSize; 
 		p1Budget = size*size*2;
@@ -118,7 +120,7 @@ public class FinalBaronGame {
 		}
 	}
 	/**
-	 * 
+	 * Method to get the information that will be printed in the GUI
 	 * @return
 	 */
 	public String getInfo() {
@@ -143,7 +145,11 @@ public class FinalBaronGame {
 		}
 		return info;
 	}
-
+	/**
+	 * Method to find the profit each player made and amount each player was paid
+	 * @return An array containing the profit and paid amount for each player 
+	 * @throws Exception If there is no possible path
+	 */
 	private int [] findProfitAndPaid() throws Exception {
 		int [] path = findPath(); //Array with the path
 		int p1paid=0; //Amount player 1 will be paid
