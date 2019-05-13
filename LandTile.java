@@ -1,5 +1,10 @@
 package application;
-
+/**
+ * Class for the tiles used in the game
+ * @author Erin Jagt
+ * @version 05/13/19
+ *
+ */
 public class LandTile {
 	/** Variable for cost of land */
 	private int cost;
@@ -75,6 +80,11 @@ public class LandTile {
 			return budgets;
 		}
 	}
+	
+	/**
+	 * Method to check if the tile is on the path or not
+	 * @return True if a tile is on the path chosen, false otherwise
+	 */
 	public boolean isOnPath() {
 		return onPath;
 	}
