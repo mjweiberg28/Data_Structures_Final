@@ -5,7 +5,12 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.Random;
-
+/**
+ * Class for the game itself that holds the rules of the game 
+ * @author Erin Jagt & Micah Weiberg
+ * @version 05/13/19
+ *
+ */
 public class FinalBaronGame {
 	/** A helper object to handle observer pattern behavior */
 	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);

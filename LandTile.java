@@ -1,7 +1,7 @@
 package application;
 /**
  * Class for the tiles used in the game
- * @author Erin Jagt
+ * @author Erin Jagt & Micah Weiberg
  * @version 05/13/19
  *
  */
