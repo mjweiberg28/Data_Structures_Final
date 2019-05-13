@@ -14,25 +14,18 @@ import java.util.Random;
 public class FinalBaronGame {
 	/** A helper object to handle observer pattern behavior */
 	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-	
 	/** Variable for size of board */
 	private int size;
-	
 	/** Variable for game board */
 	private ArrayList<LandTile> gameBoard;
-	
 	/** Variable for player 1's budget */
 	private int p1Budget;
-	
 	/** Variable for player 2's budget */
 	private int p2Budget;
-	
 	/** Variable for turn number */
 	private int turn;
-	
 	/** Variable for passing */
 	private int pass;
-	
 	/** Variable for if game done */
 	private boolean done;
 	
@@ -64,6 +57,7 @@ public class FinalBaronGame {
 		reMakeBoard();
 		pcs.firePropertyChange("board", null, null);
 	}
+	
 	/**
 	 * Method to reset game
 	 */
@@ -114,7 +108,6 @@ public class FinalBaronGame {
 				findProfitAndPaid();
 				pcs.firePropertyChange("board", null, null);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -124,6 +117,7 @@ public class FinalBaronGame {
 			pcs.firePropertyChange("pass", null, null);
 		}
 	}
+	
 	/**
 	 * Method to get the information that will be printed in the GUI
 	 * @return
@@ -134,7 +128,6 @@ public class FinalBaronGame {
 			try {
 				info = getWinner();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
