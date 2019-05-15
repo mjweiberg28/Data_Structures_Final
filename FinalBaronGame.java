@@ -39,7 +39,7 @@ public class FinalBaronGame {
 		p1Budget = size * size * 2;
 		p2Budget = p1Budget;
 		turn = 1;
-		pass = -1;
+		pass = -2;
 		done = false;
 		reMakeBoard();
 	}
@@ -53,7 +53,7 @@ public class FinalBaronGame {
 		p1Budget = size * size * 2;
 		p2Budget = p1Budget;
 		turn = 1;
-		pass = -1;
+		pass = -2;
 		done = false;
 		reMakeBoard();
 		pcs.firePropertyChange("board", null, null);
@@ -66,7 +66,7 @@ public class FinalBaronGame {
 		p1Budget = size * size * 2;
 		p2Budget = p1Budget;
 		turn = 1;
-		pass = -1;
+		pass = -2;
 		done = false;
 		reMakeBoard();
 		pcs.firePropertyChange("board", null, null);
@@ -79,7 +79,7 @@ public class FinalBaronGame {
 	 * @throws Exception If Land can't be bid on
 	 */
 	public void makeBid(int position) throws Exception {
-		if (turn == pass + 1)
+		if (done)
 			throw new Exception("You cannot buy land. Game is Over");
 		try {
 			if (turn % 2 == 1) {
