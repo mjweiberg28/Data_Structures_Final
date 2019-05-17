@@ -25,7 +25,7 @@ import javafx.scene.text.Font;
 /**
  * Main class implements the GUI for the Land Baron game
  * @author Erin Jagt & Micah Weiberg
- * @version 05/13/19
+ * @version 05/17/19
  */
 public class Main extends Application implements PropertyChangeListener, EventHandler<ActionEvent>
 {

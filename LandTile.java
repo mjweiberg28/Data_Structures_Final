@@ -3,7 +3,7 @@ package application;
 /**
  * Class for the tiles used in the game
  * @author Erin Jagt & Micah Weiberg
- * @version 05/13/19
+ * @version 05/17/19
  */
 public class LandTile {
 	/** Variable for cost of land */

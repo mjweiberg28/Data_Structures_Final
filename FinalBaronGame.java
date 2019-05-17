@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * Class for the game itself that holds the rules of the game
  * @author Erin Jagt & Micah Weiberg
- * @version 05/13/19
+ * @version 05/17/19
  *
  */
 public class FinalBaronGame {

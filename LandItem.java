@@ -2,7 +2,7 @@ package application;
 /**
  * Class for Objects that are place in priority queue 
  * @author Erin Jagt & Micah Weiberg
- * @version 05/13/19
+ * @version 05/17/19
  */
 public class LandItem implements Comparable<LandItem>{
 	/**Holds index of the item in the gameBoard array*/
