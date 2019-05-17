@@ -39,7 +39,7 @@ public class FinalBaronGame {
 		p1Budget = size * size * 2;
 		p2Budget = p1Budget;
 		turn = 1;
-		pass = -2;
+		pass = -1;
 		done = false;
 		reMakeBoard();
 	}
@@ -53,7 +53,7 @@ public class FinalBaronGame {
 		p1Budget = size * size * 2;
 		p2Budget = p1Budget;
 		turn = 1;
-		pass = -2;
+		pass = -1;
 		done = false;
 		reMakeBoard();
 		pcs.firePropertyChange("board", null, null);
@@ -66,7 +66,7 @@ public class FinalBaronGame {
 		p1Budget = size * size * 2;
 		p2Budget = p1Budget;
 		turn = 1;
-		pass = -2;
+		pass = -1;
 		done = false;
 		reMakeBoard();
 		pcs.firePropertyChange("board", null, null);
@@ -222,96 +222,20 @@ public class FinalBaronGame {
 			if (next.getIndex() == size * size - 1)
 				break;
 			// Check path going right
-			if (next.getIndex() % size != (size - 1) && gameBoard.get(next.getIndex() + 1).getType() != 'O'
-					&& pathTable[next.getIndex() + 1][2] != 1) {
-				// First time encountering index
-				if (pathTable[next.getIndex() + 1][2] == 0) {
-					pathTable[next.getIndex() + 1][0] = next.getPrice() + gameBoard.get(next.getIndex() + 1).getCost();
-					pathTable[next.getIndex() + 1][2] = 2;
-					pathTable[next.getIndex() + 1][1] = next.getIndex();
-					LandItem toAdd = new LandItem(next.getIndex() + 1, pathTable[next.getIndex() + 1][0]);
-					queue.add(toAdd);
-				}
-				// Second time, checking if cheaper path
-				else if (pathTable[next.getIndex() + 1][0] > next.getPrice()
-						+ gameBoard.get(next.getIndex() + 1).getCost()) {
-					LandItem toRemove = new LandItem(next.getIndex() + 1, pathTable[next.getIndex() + 1][2]);
-					queue.remove(toRemove);
-					pathTable[next.getIndex() + 1][0] = next.getPrice() + gameBoard.get(next.getIndex() + 1).getCost();
-					pathTable[next.getIndex() + 1][1] = next.getIndex();
-					LandItem toAdd = new LandItem(next.getIndex() + 1, pathTable[next.getIndex() + 1][0]);
-					queue.add(toAdd);
-				}
+			if (checkAdjacent(next.getIndex(),'R',pathTable)) {
+				checkAndAddToQueue(pathTable, queue, next,next.getIndex() + 1);
 			}
 			// Check path going left
-			if (next.getIndex() % size != 0 && gameBoard.get(next.getIndex() - 1).getType() != 'O'
-					&& pathTable[next.getIndex() - 1][2] != 1) {
-				// First time encountering index
-				if (pathTable[next.getIndex() - 1][2] == 0) {
-					pathTable[next.getIndex() - 1][0] = next.getPrice() + gameBoard.get(next.getIndex() - 1).getCost();
-					pathTable[next.getIndex() - 1][2] = 2;
-					pathTable[next.getIndex() - 1][1] = next.getIndex();
-					LandItem toAdd = new LandItem(next.getIndex() - 1, pathTable[next.getIndex() - 1][0]);
-					queue.add(toAdd);
-				}
-				// Second time, checking if cheaper path
-				else if (pathTable[next.getIndex() - 1][0] > next.getPrice()
-						+ gameBoard.get(next.getIndex() - 1).getCost()) {
-					LandItem toRemove = new LandItem(next.getIndex() - 1, pathTable[next.getIndex() - 1][2]);
-					queue.remove(toRemove);
-					pathTable[next.getIndex() - 1][0] = next.getPrice() + gameBoard.get(next.getIndex() - 1).getCost();
-					pathTable[next.getIndex() - 1][1] = next.getIndex();
-					LandItem toAdd = new LandItem(next.getIndex() - 1, pathTable[next.getIndex() - 1][0]);
-					queue.add(toAdd);
-				}
+			if (checkAdjacent(next.getIndex(),'L',pathTable)) {
+				checkAndAddToQueue(pathTable, queue, next,next.getIndex()-1);
 			}
 			// Check path going down
-			if (next.getIndex() / size != (size - 1) && gameBoard.get(next.getIndex() + size).getType() != 'O'
-					&& pathTable[next.getIndex() + size][2] != 1) {
-				// First time encountering index
-				if (pathTable[next.getIndex() + size][2] == 0) {
-					pathTable[next.getIndex() + size][0] = next.getPrice()
-							+ gameBoard.get(next.getIndex() + size).getCost();
-					pathTable[next.getIndex() + size][2] = 2;
-					pathTable[next.getIndex() + size][1] = next.getIndex();
-					LandItem toAdd = new LandItem(next.getIndex() + size, pathTable[next.getIndex() + size][0]);
-					queue.add(toAdd);
-				}
-				// Second time, checking if cheaper path
-				else if (pathTable[next.getIndex() + size][0] > next.getPrice()
-						+ gameBoard.get(next.getIndex() + size).getCost()) {
-					LandItem toRemove = new LandItem(next.getIndex() + size, pathTable[next.getIndex() + size][2]);
-					queue.remove(toRemove);
-					pathTable[next.getIndex() + size][0] = next.getPrice()
-							+ gameBoard.get(next.getIndex() + size).getCost();
-					pathTable[next.getIndex() + size][1] = next.getIndex();
-					LandItem toAdd = new LandItem(next.getIndex() + size, pathTable[next.getIndex() + size][0]);
-					queue.add(toAdd);
-				}
+			if (checkAdjacent(next.getIndex(),'D',pathTable)) {
+				checkAndAddToQueue(pathTable, queue, next,next.getIndex() + size);
 			}
 			// Check path going up
-			if (next.getIndex() / size != 0 && gameBoard.get(next.getIndex() - size).getType() != 'O'
-					&& pathTable[next.getIndex() - size][2] != 1) {
-				// First time encountering index
-				if (pathTable[next.getIndex() - size][2] == 0) {
-					pathTable[next.getIndex() - size][0] = next.getPrice()
-							+ gameBoard.get(next.getIndex() - size).getCost();
-					pathTable[next.getIndex() - size][2] = 2;
-					pathTable[next.getIndex() - size][1] = next.getIndex();
-					LandItem toAdd = new LandItem(next.getIndex() - size, pathTable[next.getIndex() - size][0]);
-					queue.add(toAdd);
-				}
-				// Second time, checking if cheaper path
-				else if (pathTable[next.getIndex() - size][0] > next.getPrice()
-						+ gameBoard.get(next.getIndex() - size).getCost()) {
-					LandItem toRemove = new LandItem(next.getIndex() - size, pathTable[next.getIndex() - size][2]);
-					queue.remove(toRemove);
-					pathTable[next.getIndex() - size][0] = next.getPrice()
-							+ gameBoard.get(next.getIndex() - size).getCost();
-					pathTable[next.getIndex() - size][1] = next.getIndex();
-					LandItem toAdd = new LandItem(next.getIndex() - size, pathTable[next.getIndex() - size][0]);
-					queue.add(toAdd);
-				}
+			if (checkAdjacent(next.getIndex(),'U',pathTable)) {
+				checkAndAddToQueue(pathTable, queue, next,next.getIndex() -size);
 			}
 		}
 		if (pathTable[size * size - 1][2] != 1)
@@ -330,6 +254,84 @@ public class FinalBaronGame {
 		return path;
 	}
 
+	/**Method see if we found a shorter path to the point
+	 * @param pathTable The table with all the path length
+	 * @param queue The priority queue that we will add new LandItems too
+	 * @param next The current land item we are on
+	 * @param indexChecking The index of the item we are checking for a shorter path to
+	 */
+	private void checkAndAddToQueue(int[][] pathTable, PriorityQueue<LandItem> queue, LandItem next, int indexChecking) {
+		// First time encountering index
+		if (pathTable[indexChecking][2] == 0) {
+			pathTable[indexChecking][0] = next.getPrice() + gameBoard.get(indexChecking).getCost();
+			pathTable[indexChecking][2] = 2;
+			pathTable[indexChecking][1] = next.getIndex();
+			LandItem toAdd = new LandItem(indexChecking, pathTable[indexChecking][0]);
+			queue.add(toAdd);
+		}
+		// Second time, checking if cheaper path
+		else if (pathTable[indexChecking][0] > next.getPrice()
+				+ gameBoard.get(indexChecking).getCost()) {
+			LandItem toRemove = new LandItem(indexChecking, pathTable[indexChecking][2]);
+			queue.remove(toRemove);
+			pathTable[indexChecking][0] = next.getPrice() + gameBoard.get(indexChecking).getCost();
+			pathTable[indexChecking][1] = next.getIndex();
+			LandItem toAdd = new LandItem(indexChecking, pathTable[indexChecking][0]);
+			queue.add(toAdd);
+		}
+	}
+	
+	/**
+	 * Method to Check if given index has a land adjacent to it in given direction 
+	 * @param indexToCheck the index you are checking 
+	 * @param typeChecking the direction you are checking ()
+	 * @param pathTable The table with all the path length and whether a path is done or not
+	 * @return
+	 */
+	private boolean checkAdjacent(int indexToCheck, char typeChecking, int[][] pathTable) {
+		//Check right
+		if(typeChecking=='R') {
+			if ((indexToCheck % size) == (size-1))
+				return false;
+			else if(pathTable[indexToCheck+1][2]!=1){
+				return gameBoard.get(indexToCheck+1).getType() != 'O';
+			}
+			else
+				return false;
+		}
+		//Check Left
+		if(typeChecking=='L') {
+			if (indexToCheck % size == 0)
+				return false;
+			else if(pathTable[indexToCheck-1][2]!=1){
+				return gameBoard.get(indexToCheck-1).getType() != 'O';
+			}
+			else
+				return false;
+		}
+		//Check Up
+		if(typeChecking=='U') {
+			if (indexToCheck / size == 0)
+				return false;
+			else if(pathTable[indexToCheck-size][2]!=1){
+				return gameBoard.get(indexToCheck-size).getType() != 'O';
+			}
+			else
+				return false;
+		}
+		//Check Down
+		if(typeChecking=='D') {
+			if (indexToCheck / size == (size - 1))
+				return false;
+			else if(pathTable[indexToCheck+size][2]!=1){
+				return gameBoard.get(indexToCheck+size).getType() != 'O';
+			}
+			else
+				return false;
+		}
+		return false;
+	}
+	
 	/**
 	 * A way for Observers to subscribe to this
 	 * @param listener
