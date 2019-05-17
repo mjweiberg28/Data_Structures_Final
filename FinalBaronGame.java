@@ -14,7 +14,7 @@ import java.util.Random;
  */
 public class FinalBaronGame {
 	/** A helper object to handle observer pattern behavior */
-	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	/** Variable for size of board */
 	private int size;
 	/** Variable for game board */
