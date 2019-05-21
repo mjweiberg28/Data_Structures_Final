@@ -9,12 +9,12 @@ import java.util.Random;
 /**
  * Class for the game itself that holds the rules of the game
  * @author Erin Jagt & Micah Weiberg
- * @version 05/17/19
+ * @version 05/21/19
  *
  */
 public class FinalBaronGame {
 	/** A helper object to handle observer pattern behavior */
-	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	/** Variable for size of board */
 	private int size;
 	/** Variable for game board */
@@ -32,7 +32,7 @@ public class FinalBaronGame {
 
 	/**
 	 * Constructor for FinalBaronGame
-	 * @param newSize the size of the game board o build
+	 * @param newSize the new size of the game board
 	 */
 	FinalBaronGame(int newSize) {
 		size = newSize;
@@ -46,7 +46,7 @@ public class FinalBaronGame {
 
 	/**
 	 * Method to change size (makes a new game)
-	 * @param newSize the new size
+	 * @param newSize the new size of the game board
 	 */
 	public void setSize(int newSize) {
 		size = newSize;
@@ -177,7 +177,7 @@ public class FinalBaronGame {
 
 	/**
 	 * Method to return winner
-	 * @return
+	 * @return A string of information about the final game results
 	 * @throws Exception If no path exists
 	 */
 	private String getWinner() throws Exception {
@@ -208,6 +208,14 @@ public class FinalBaronGame {
 	 * @throws Exception If no possible path exists
 	 */
 	private int[] findPath() throws Exception {
+		/* Create table of size^2 by 3 for the Dijkstra's algorithm calculation
+		 * of the cheapest path for the company. The 3 columns are for documenting
+		 * 1) the position on the game board 2) the previous node/position that
+		 * the current cheapest path goes through to get to that node and
+		 * 3) whether that node is "done" by having been dequeued from the
+		 * PriorityQueue object and the cheapest path to that node from the start 
+		 * having been determined.
+		 */
 		int[][] pathTable = new int[size * size][3];
 		PriorityQueue<LandItem> queue = new PriorityQueue<LandItem>();
 		LandItem start = new LandItem(0, 0);
@@ -254,7 +262,7 @@ public class FinalBaronGame {
 		return path;
 	}
 
-	/**Method see if we found a shorter path to the point
+	/** Method see if we found a shorter path to the point
 	 * @param pathTable The table with all the path length
 	 * @param queue The priority queue that we will add new LandItems too
 	 * @param next The current land item we are on
@@ -284,9 +292,9 @@ public class FinalBaronGame {
 	/**
 	 * Method to Check if given index has a land adjacent to it in given direction 
 	 * @param indexToCheck the index you are checking 
-	 * @param typeChecking the direction you are checking ()
+	 * @param typeChecking the direction you are checking
 	 * @param pathTable The table with all the path length and whether a path is done or not
-	 * @return
+	 * @return True/False value whether there is a viable LandTile adjacent to it
 	 */
 	private boolean checkAdjacent(int indexToCheck, char typeChecking, int[][] pathTable) {
 		//Check right

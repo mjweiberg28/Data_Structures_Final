@@ -3,7 +3,7 @@ package application;
 /**
  * Class for the tiles used in the game
  * @author Erin Jagt & Micah Weiberg
- * @version 05/17/19
+ * @version 05/21/19
  */
 public class LandTile {
 	/** Variable for cost of land */
@@ -55,7 +55,7 @@ public class LandTile {
 	/**
 	 * Method to change the owner of the land
 	 * @param playerBudget budget of the player
-	 * @param player       which player who is buying the land
+	 * @param player which player is buying the land
 	 * @return the new budget of player
 	 * @throws Exception If player can't buy land
 	 */
