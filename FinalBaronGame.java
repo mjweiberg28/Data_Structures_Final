@@ -214,7 +214,8 @@ public class FinalBaronGame {
 		 * the current cheapest path goes through to get to that node and
 		 * 3) whether that node is "done" by having been dequeued from the
 		 * PriorityQueue object and the cheapest path to that node from the start 
-		 * having been determined.
+		 * having been determined. This value is 1 if the node is done, 0 is it has 
+		 * never been reached berfore and 2 if it was reached before but isn't done
 		 */
 		int[][] pathTable = new int[size * size][3];
 		PriorityQueue<LandItem> queue = new PriorityQueue<LandItem>();
